@@ -97,6 +97,7 @@ class Scanner {
                 } else {
                     addToken(SLASH);
                 }
+                break;
             case '"': string(); break;
             default:
                 if (isDigit(c)) {
