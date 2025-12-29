@@ -37,13 +37,14 @@ class Parser {
     }
 
     private Expr comparison() {
-        Expr expr term();
+        Expr expr = term();
 
         while (match(GREATER, GREATER_EQUAL, LESS, LESS_EQUAL)) {
             Token operator = previous();
             Expr right = term();
             expr = new Expr.Binary(expr, operator, right);
         }
+        return expr;
     }
 
     private Expr term() {
