@@ -10,8 +10,7 @@ class RuntimeError extends RuntimeException {
 }
 
 class Interpreter implements Expr.Visitor<Object> {
-
-    static boolean hadRuntimeError = false;
+    
 
     void interpret(Expr expression) {
         try {
@@ -23,7 +22,7 @@ class Interpreter implements Expr.Visitor<Object> {
     }
 
     @Override
-    public Object visitLiteralExp(Expr.Literal expr) {
+    public Object visitLiteralExpr(Expr.Literal expr) {
         return expr.value;
     }
 
@@ -130,13 +129,6 @@ class Interpreter implements Expr.Visitor<Object> {
         }
 
         return object.toString();
-    }
-
-    static void runtimeError(RuntimeError error) {
-        System.err.println(error.getMessage() + 
-            "\n[line " + error.token.line + "]");
-        hadRuntimeError = true;  
-    
     }
 
     private Object evaluate(Expr expr) {
