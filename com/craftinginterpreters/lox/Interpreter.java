@@ -41,10 +41,11 @@ class Interpreter implements Expr.Visitor<Object> {
             case MINUS:
                 checkNumberOperand(expr.operator, right);
                 return -(double)right;
+            default:
+                break;
         }
 
-        // Unreachable.
-        return null;
+        throw new RuntimeError(expr.operator, "Unknown unary operator.");
     }
 
     private void checkNumberOperand(Token operator, Object operand) {
@@ -98,10 +99,11 @@ class Interpreter implements Expr.Visitor<Object> {
                 return (double)left <= (double)right;
             case BANG_EQUAL: return !isEqual(left, right);
             case EQUAL_EQUAL: return isEqual(left, right);
+            default:
+                break;
         }
 
-        // Unreachable.
-        return null;
+        throw new RuntimeError(expr.operator, "Unknown binary operator.");
     }
 
     private boolean isTruthy(Object object) {
