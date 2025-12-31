@@ -11,6 +11,17 @@ class RuntimeError extends RuntimeException {
 
 class Interpreter implements Expr.Visitor<Object> {
 
+    static boolean hadRuntimeError = false;
+
+    void interpret(Expr expression) {
+        try {
+            Object value = evaluate(expression);
+            System.out.println(stringify(value));
+        } catch (RuntimeError error) {
+            Lox.runtimeError(error);
+        }
+    }
+
     @Override
     public Object visitLiteralExp(Expr.Literal expr) {
         return expr.value;
@@ -105,6 +116,27 @@ class Interpreter implements Expr.Visitor<Object> {
         if (a == null) return false;
 
         return a.equals(b);
+    }
+
+    private String stringify(Object object) {
+        if (object == null) return "nil";
+
+        if (object instanceof Double) {
+            String text = object.toString();
+            if (text.endsWith(".0")) {
+                text = text.substring(0, text.length() - 2);
+            }
+            return text;
+        }
+
+        return object.toString();
+    }
+
+    static void runtimeError(RuntimeError error) {
+        System.err.println(error.getMessage() + 
+            "\n[line " + error.token.line + "]");
+        hadRuntimeError = true;  
+    
     }
 
     private Object evaluate(Expr expr) {
